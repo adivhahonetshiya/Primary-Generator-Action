@@ -40,13 +40,14 @@
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
 #include "G4ThreeVector.hh"
+#include <cmath>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4ThreeVector PrimaryGeneratorAction::IsotropicParticleDirection()
 {
     double phi = 360.*deg*G4UniformRand();
-    double theta =std::acos(1-1*G4UniformRand());
+    double theta =std::acos(1-2*G4UniformRand());
 
     double x = std::sin(theta)*std::cos(phi);
     double y = std::sin(theta)*std::sin(phi);
@@ -54,6 +55,14 @@ G4ThreeVector PrimaryGeneratorAction::IsotropicParticleDirection()
 
      G4ThreeVector vector = G4ThreeVector(x,y,z);
     return vector;
+}
+
+G4double MyEnergyDistribution( G4double Xo, G4double FWHM, G4double X)
+{
+
+G4double f = 1/(pi*FWHM)*((pow(FWHM,2))/((pow(X-Xo,2))+(pow(FWHM,2))));
+
+return f;
 }
 
 
@@ -71,7 +80,8 @@ B4PrimaryGeneratorAction::B4PrimaryGeneratorAction()
   fParticleGun->SetParticleDefinition(particleDefinition);
 G4ThreeVector randomIsotropicDirection = IsotropicParticleDirection();
 fParticleGun->SetParticleMomentumDirection(randomIsotropicDirection);
-  fParticleGun->SetParticleEnergy(1.*MeV);
+G4double eGamma = MyEnergyDistribution( 5.*MeV,0.5*MeV,15.*MeV);      
+  fParticleGun->SetParticleEnergy(eGamma);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
