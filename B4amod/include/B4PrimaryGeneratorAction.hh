@@ -36,6 +36,8 @@
 
 class G4ParticleGun;
 class G4Event;
+G4ThreeVector IsotropicParticleDirection(); 
+G4double pi = 3.14159265358979323846;
 
 /// The primary generator action class with particle gum.
 ///
@@ -49,7 +51,7 @@ class B4PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
 public:
   B4PrimaryGeneratorAction();
-  G4ThreeVector IsotropicParticleDirection();    
+     
   virtual ~B4PrimaryGeneratorAction();
 
   virtual void GeneratePrimaries(G4Event* event);
